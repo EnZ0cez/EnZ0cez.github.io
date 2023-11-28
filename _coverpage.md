@@ -3,7 +3,7 @@
 # EnZ0's Notes 
 
 ![logo](/_media/kita.jpg)
-> 摆烂生活
+> 😴摆烂生活
 
 *Day day happy*
 - 课程笔记
