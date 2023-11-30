@@ -12,5 +12,7 @@
 * Programming
    * [拼图小游戏](Programming/拼图小游戏.md)
 
+* Knowledge
+   * [芯片制裁简述](Knowledge/Semiconductor.md)
 
 - [Homepage](https://enz0cez.github.io/#/)
