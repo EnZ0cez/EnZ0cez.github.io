@@ -2,7 +2,7 @@
 
 
 * Papers
-   
+   * [Survey of High Utility Itemset Mining](Papers/pdf/Survey_high_utility_itemset2019_draft.pdf)
   
 * Courses
    * [PatternMiningCourses](Courses/PatternMiningCourse.md)
