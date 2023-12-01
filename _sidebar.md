@@ -2,7 +2,8 @@
 
 
 * Papers
-   * [Survey of High Utility Itemset Mining](Papers/pdf/Survey_high_utility_itemset2019_draft.pdf)
+   * [LCIM: Mining Low Cost High Utility Itemsets](Papers/LCIM.md)
+  
   
 * Courses
    * [PatternMiningCourses](Courses/PatternMiningCourse.md)

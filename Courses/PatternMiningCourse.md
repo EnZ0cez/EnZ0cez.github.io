@@ -1,3 +1,5 @@
+The aim is to apply algorithms to find interesting patterns in data that meet some user-defined constraints
+
 ## High Utility Itemset Mining
 
 Problem description: Find what combinations make the most money. 
