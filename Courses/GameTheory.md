@@ -127,3 +127,41 @@ $q_2^A = \frac{40 - q_1^A}{2},$
 $q_2^B = \frac{80 - q_1^B}{2}.$
 
 我们得到 $q^A_1=40 \ and \ q^A_2=0,q^B_1=0,q^B_2=40$。每个公司的收益正如我们在上面(a)部分计算的那样，将等于1600。因此，该公司希望披露该信息并让世贸组织实施禁令，这将有效地扼杀跨境竞争。
+
+## 6.4
+
+![image-20231208195058372](./_media/image-20231208195058372.png)
+
+答：
+
+a:设$p$为玩家 1 选择 W的概率，q为玩家 2 选择M的概率。它遵循 $v_1(W,q) > v_1(S,q)$ 当且仅当$1>2(1-q)$，或$q> \frac{1}{2}$，且$v_2(p,M)>v_2(p,I)$ 当且仅当$p+2(1-p)>2p+(1-p)$，或 $p<\frac{1}{2}$ 。 
+
+对于玩家 1 来说，
+
+$BR_1(q) = \begin{cases}  p = 0 & \text{if } q < \frac{1}{2} \\ p \in [0, 1] & \text{if } q = \frac{1}{2} \\ p = 1 & \text{if } q > \frac{1}{2} \end{cases}$
+
+对于玩家 2 来说，
+
+$BR_2(p) = \begin{cases}  q = 1 & \text{if } p < \frac{1}{2} \\ q \in [0, 1] & \text{if } p = \frac{1}{2} \\ q = 0 & \text{if } p > \frac{1}{2} \end{cases}$
+
+b:从两个最佳响应对应中，独特的纳什均衡为$(p,q)=(1/2,1/2)$ 
+
+## 6.5
+
+![image-20231208195124465](./_media/image-20231208195124465.png)
+
+a: 假设P代表巡逻C代表咖啡厅，S代表行窃H代表躲藏
+
+$\begin{equation*} \begin{array}{c|cc}    & \ \text{S} & \text{H} \\ \hline \text{P} & (20 -10) & (0, 0) \\ \text{C} & (10, 10) & (10, 0) \\ \end{array} \end{equation*}$
+
+b:设 p为警察选择P的概率，q为小偷 选择盗窃的概率。它遵循 $v_1(P,q)>v_1(C,q)$ 当且仅当 $20q>10$，也就是$q>1/2$,且$v_2(p,S)>v_2(p,H)$当且仅当 $-10p+10(1-p)>0$,或 $p<1/2$
+
+对警察来说
+
+$BR_1(q) = \begin{cases}  p = 0 & \text{if } q < \frac{1}{2} \\ p \in [0, 1] & \text{if } q = \frac{1}{2} \\ p = 1 & \text{if } q > \frac{1}{2} \end{cases}$
+
+对小偷来说
+
+$BR_2(p) = \begin{cases}  q = 1 & \text{if } p < \frac{1}{2} \\ q \in [0, 1] & \text{if } p = \frac{1}{2} \\ q = 0 & \text{if } p > \frac{1}{2} \end{cases}$
+
+c:从这两个最佳响应对应中，独特的纳什均衡为$ (p,q)=(1/2,1/2)$ 并且游戏的策略力量与匹配便士游戏中的策略力量相同。
