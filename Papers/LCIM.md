@@ -147,6 +147,8 @@ its support s(X) ≥ minsup.
 
 第一个property就是对于两个项集，如果X是属于Y的，那么X的support就一定大于等于Y的support，这个非常明显，比如项集{a,b}的support必定小于等于{a}的support，因为它包含了更多的项。
 
+这里定义一个接下来要用到的变量ACB，他是由A(X)中数量大于minsup的项的cost的和除以X的sup，也就是x出现的次数
+
 ## The LCIM algorithm
 
 **算法 1：LCIM算法**
