@@ -144,7 +144,7 @@ $BR_1(q) = \begin{cases}  p = 0 & \text{if } q < \frac{1}{2} \\ p \in [0, 1] & \
 
 $BR_2(p) = \begin{cases}  q = 1 & \text{if } p < \frac{1}{2} \\ q \in [0, 1] & \text{if } p = \frac{1}{2} \\ q = 0 & \text{if } p > \frac{1}{2} \end{cases}$
 
-b:从两个最佳响应对应中，独特的纳什均衡为$(p,q)=(1/2,1/2)$ 
+b:从两个最佳响应对应中，独特的纳什均衡为$(p,q)=(1/2,1/2)$ ，并且游戏的战略力量与抛硬币游戏中的相同
 
 ## 6.5
 
