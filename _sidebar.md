@@ -12,7 +12,7 @@
 
    * [Game Theory](Courses/GameTheory.md)
    
-   * [Game Theory Presentation](Courses/GameTheoryPresentation.md)
+   * [Game Theory Presentation](Courses/Game Theory Presentation.md)
    
      <!--注意这里是相对路径-->
    
@@ -23,3 +23,4 @@
    * [芯片制裁简述](Knowledge/Semiconductor.md)
 
 - [Homepage](https://enz0cez.github.io/#/)
+
