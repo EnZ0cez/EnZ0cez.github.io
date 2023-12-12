@@ -3,13 +3,19 @@
 
 * Papers
    * [LCIM: Mining Low Cost High Utility Itemsets](Papers/LCIM.md)
-  
-  
+
+
 * Courses
    * [PatternMiningCourses](Courses/PatternMiningCourse.md)
+   
    * [Algorithm Design and Analysis](Courses/算法设计与分析课程.md)
-   <!--注意这里是相对路径-->
 
+   * [Game Theory](Courses/GameTheory.md)
+   
+   * [Game Theory Presentation](Courses/GameTheoryPresentation.md)
+   
+     <!--注意这里是相对路径-->
+   
 * Programming
    * [拼图小游戏](Programming/拼图小游戏.md)
 
