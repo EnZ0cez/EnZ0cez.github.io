@@ -40,6 +40,62 @@ public static native void arraycopy(Object src,  int  srcPos, Object dest, int d
 //length：要复制的元素数量。
 `````
 
+### 3、Date类
+
+简单来说：使用无参构造，可以自动设置当前系统时间的毫秒时刻；指定long类型的构造参数，可以自定义毫秒时刻。例如：
+
+```java
+import java.util.Date;
+
+public class Demo01Date {
+    public static void main(String[] args) {
+        // 创建日期对象，把当前的时间
+        System.out.println(new Date()); // Tue Jan 16 14:37:35 CST 2020
+        // 创建日期对象，把当前的毫秒值转成日期对象
+        System.out.println(new Date(0L)); // Thu Jan 01 08:00:00 CST 1970
+    }
+}
+```
+
+常用方法：
+
+Date类中的多数方法已经过时，常用的方法有：
+
+- `public long getTime()` 把日期对象转换成对应的时间毫秒值。
+- `public void setTime(long time)` 把方法参数给定的毫秒值设置给日期对象
+
+示例代码
+
+```java
+public class DateDemo02 {
+    public static void main(String[] args) {
+        //创建日期对象
+        Date d = new Date();
+        
+        //public long getTime():获取的是日期对象从1970年1月1日 00:00:00到现在的毫秒值
+        //System.out.println(d.getTime());
+        //System.out.println(d.getTime() * 1.0 / 1000 / 60 / 60 / 24 / 365 + "年");
+
+        //public void setTime(long time):设置时间，给的是毫秒值
+        //long time = 1000*60*60;
+        long time = System.currentTimeMillis();
+        d.setTime(time);
+
+        System.out.println(d);
+    }
+}
+```
+
+> 小结：Date表示特定的时间瞬间，我们可以使用Date对象对时间进行操作。
+
+### 4、SimpleDateFormat类
+
+`java.text.SimpleDateFormat` 是日期/时间格式化类，我们通过这个类可以帮我们完成日期和文本之间的转换,也就是可以在Date对象与String对象之间进行来回转换。
+
+
+
+
+
 ## 正则表达式
 
 在Java中，我们经常需要验证一些字符串，例如：年龄必须是2位的数字、用户名必须是8位长度而且只能包含大小写字母、数字等。正则表达式就是用来验证各种字符串的规则。它内部描述了一些规则，我们可以验证用户输入的字符串是否匹配这个规则。
@@ -83,3 +139,4 @@ tips: \ 在java中表示转义的意思，就是改变后面那个字符原本�
 
 String中有一个方法matchs(String regex)，这个regex表示一个正则表达式，返回的是boolean类型，表示此字符是否匹配给定的正则表达式
 
+### 

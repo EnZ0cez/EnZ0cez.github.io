@@ -13,6 +13,8 @@
    * [Game Theory](Courses/GameTheory.md)
    
    * [Game Theory Presentation](Courses/Game%20Theory%20Presentation.md)
+
+   * [Teaching](Courses/教学目标.md)
    
      <!--注意这里是相对路径-->
    
