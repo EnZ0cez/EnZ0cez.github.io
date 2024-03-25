@@ -2,7 +2,7 @@
 
 # EnZ0's Notes 
 
-![logo](/_media/kita.jpg)
+![logo](/_media/maimin.jpg)
 > 😴摆烂生活
 
 *Day day happy*
@@ -14,4 +14,4 @@
 
 <!-- 背景图片 -->
 
-![](_media/bg.jpg)
+![](_media/fulilianbg.jpg)
