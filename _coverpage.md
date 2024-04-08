@@ -1,11 +1,13 @@
 <!-- _coverpage.md -->
 
-# EnZ0's Notes 
+# EnZ0's Website 
 
 ![logo](/_media/maimin.jpg)
 > 😴摆烂生活
 
 *Day day happy*
+
+The winner takes it all
 <!-- - 课程笔记
 - 论文笔记 -->
 
