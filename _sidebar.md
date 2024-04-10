@@ -6,6 +6,8 @@
 
    * [KRIMP](Papers/KRIMP.md)
 
+   * [English Presentation](Papers/Professional%20English.md)
+
 
 * Courses
    * [PatternMiningCourses](Courses/PatternMiningCourse.md)
