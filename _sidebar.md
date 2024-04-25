@@ -18,6 +18,9 @@
    
    * [Game Theory Presentation](Courses/Game%20Theory%20Presentation.md)
 
+   * [Machine Learning](Courses/Machine%20Learning.md)
+
+
    <!-- * [Teaching](Courses/教学目标.md) -->
    
      <!--注意这里是相对路径-->

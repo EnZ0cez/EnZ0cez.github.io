@@ -1025,3 +1025,259 @@ Ajax: 全称Asynchronous JavaScript And XML，异步的JavaScript和XML。其作
 
 #### 原生Ajax
 
+```javascript
+function getData(){
+        //1. 创建XMLHttpRequest 
+        var xmlHttpRequest  = new XMLHttpRequest();
+        xmlHttpRequest.open("GET","https://mock.apifox.cn/m1/3128855-0-default/emp/list",true);
+        xmlHttpRequest.send();
+
+        //2. 监听状态
+        xmlHttpRequest.onreadystatechange = function(){
+            if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200){
+                //3. 获取数据
+                var data = xmlHttpRequest.responseText;
+                document.getElementById("div1").innerHTML = data;
+            }
+        }
+    }   
+```
+
+#### Axios
+
+Axios是对原生的AJAX进行封装，简化书写。Axios官网是：`https://www.axios-http.cn`
+
+##### Axios的基本使用
+
+Axios的使用比较简单，主要分为2步：
+
+- 引入Axios文件
+
+	~~~html
+	<script src="js/axios-0.18.0.js"></script>
+	~~~
+
+- 使用Axios发送请求，并获取响应结果，官方提供的api很多，此处给出2种，如下
+
+	- 发送 get 请求
+
+		~~~js
+		axios({
+		    method:"get",
+		    url:"http://localhost:8080/ajax-demo1/aJAXDemo1?username=zhangsan"
+		}).then(function (resp){
+		    alert(resp.data);
+		})
+		~~~
+
+	- 发送 post 请求
+
+		```js
+		axios({
+		    method:"post",
+		    url:"http://localhost:8080/ajax-demo1/aJAXDemo1",
+		    data:"username=zhangsan"
+		}).then(function (resp){
+		    alert(resp.data);
+		});
+		```
+
+	axios()是用来发送异步请求的，小括号中使用 js的JSON对象传递请求相关的参数：
+
+	- method属性：用来设置请求方式的。取值为 get 或者 post。
+	- url属性：用来书写请求的资源路径。如果是 get 请求，需要将请求参数拼接到路径的后面，格式为： url?参数名=参数值&参数名2=参数值2。
+	- data属性：作为请求体被发送的数据。也就是说如果是 post 请求的话，数据需要作为 data 属性的值。
+
+	then() 需要传递一个匿名函数。我们将 then()中传递的匿名函数称为 **回调函数**，意思是该匿名函数在发送请求时不会被调用，而是在成功响应后调用的函数。而该回调函数中的 resp 参数是对响应的数据进行封装的对象，通过 resp.data 可以获取到响应的数据。
+
+##### 请求方法的别名
+
+Axios还针对不同的请求，提供了别名方式的api,具体如下：
+
+| 方法                               | 描述           |
+| ---------------------------------- | -------------- |
+| axios.get(url [, config])          | 发送get请求    |
+| axios.delete(url [, config])       | 发送delete请求 |
+| axios.post(url [, data[, config]]) | 发送post请求   |
+| axios.put(url [, data[, config]])  | 发送put请求    |
+
+### 前段工程化
+
+#### VUE项目
+
+![image-20240413135846397](./_media/image-20240413135846397.png)
+
+#### Vue项目开发流程
+
+我们自习观察发现，index.html的代码很简洁，但是浏览器所呈现的index.html内容却很丰富，代码和内容不匹配，所以vue是如何做到的呢？接下来我们学习一下vue项目的开发流程。
+
+对于vue项目，index.html文件默认是引入了入口函数main.js文件，我们找到**src/main.js**文件，其代码如下：
+
+~~~js
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+
+Vue.config.productionTip = false
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')
+
+~~~
+
+上述代码中，包括如下几个关键点：
+
+- import: 导入指定文件，并且重新起名。例如上述代码`import App from './App.vue'`导入当前目录下得App.vue并且起名为App
+- new Vue(): 创建vue对象
+- $mount('#app');将vue对象创建的dom对象挂在到id=app的这个标签区域中，作用和之前学习的vue对象的le属性一致。
+- router:  路由，详细在后面的小节讲解
+- render: 主要使用视图的渲染的。
+
+
+
+来到**public/index.html**中，我们**删除div的id=app属性**，打开浏览器，发现之前访问的首页一片空白，如下图所示，这样就证明了，我们main.js中通过代码挂在到index.html的id=app的标签区域的。
+
+此时我们知道了vue创建的dom对象挂在到id=app的标签区域，但是我们还是没有解决最开始的问题：首页内容如何呈现的？这就涉及到render中的App了，如下图所示：![image-20240413140520553](./_media/image-20240413140520553.png)
+
+那么这个App对象怎么回事呢，我们打开App.vue,注意的是.vue结尾的都是vue组件。而vue的组件文件包含3个部分：
+
+- template: 模板部分，主要是HTML代码，用来展示页面主体结构的
+- script: js代码区域，主要是通过js代码来控制模板的数据来源和行为的
+- style: css样式部分，主要通过css样式控制模板的页面效果得
+
+如下图所示就是一个vue组件的小案例：
+
+![image-20240413140534361](./_media/image-20240413140534361.png)
+
+### Vue组件库Element
+
+#### Element介绍
+
+不知道同学们还否记得我们之前讲解的前端开发模式MVVM，我们之前学习的vue是侧重于VM开发的，主要用于数据绑定到视图的，那么接下来我们学习的ElementUI就是一款侧重于V开发的前端框架，主要用于开发美观的页面的。
+
+Element：是饿了么公司前端开发团队提供的一套基于 Vue 的网站组件库，用于快速构建网页。
+
+Element 提供了很多组件（组成网页的部件）供我们使用。例如 超链接、按钮、图片、表格等等。如下图所示就是我们开发的页面和ElementUI提供的效果对比：可以发现ElementUI提供的各式各样好看的按钮![image-20240413140706090](./_media/image-20240413140706090.png)
+
+ElementUI的学习方式和我们之前的学习方式不太一样，对于ElementUI，我们作为一个后台开发者，只需要**学会如何从ElementUI的官网拷贝组件到我们自己的页面中，并且做一些修改即可**。其官网地址：https://element.eleme.cn/#/zh-CN，我们主要学习的是ElementUI中提供的常用组件，至于其他组件同学们可以通过我们这几个组件的学习掌握到ElementUI的学习技巧，然后课后自行学习。
+
+#### 快速入门
+
+首先我们要掌握ElementUI的快速入门，接下来同学们就一起跟着步骤来操作一下。
+
+首先，我们先要安装ElementUI的组件库，打开VS Code，停止之前的项目，然后在命令行输入如下命令：
+
+~~~
+npm install element-ui@2.15.3 
+~~~
+
+然后我们需要在main.js这个入口js文件中引入ElementUI的组件库，其代码如下：
+
+~~~js
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(ElementUI);
+~~~
+
+然后我们需要按照vue项目的开发规范，在**src/views**目录下创建一个vue组件文件，注意组件名称后缀是.vue，并且在组件文件中编写之前介绍过的基本组件语法，代码如下：
+
+~~~html
+<template>
+
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>
+~~~
+
+然后将Element的组件代码复制进来
+
+```html
+<template>
+    <el-row>
+        <el-button>默认按钮</el-button>
+        <el-button type="primary">主要按钮</el-button>
+        <el-button type="success">成功按钮</el-button>
+        <el-button type="info">信息按钮</el-button>
+        <el-button type="warning">警告按钮</el-button>
+        <el-button type="danger">危险按钮</el-button>
+    </el-row>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>
+```
+
+最后，我们需要在默认访问的根组件**src/App.vue**中引入我们自定义的组件，具体操作步骤如下：
+
+然后App.vue组件中的具体代码如下，**代码是我们通过上述步骤引入element-view组件时自动生成的**。
+
+~~~html
+<template>
+  <div id="app">
+    <!-- {{message}} -->
+    <element-view></element-view>
+  </div>
+</template>
+
+<script>
+import ElementView from './views/Element/ElementView.vue'
+export default {
+  components: { ElementView },
+  data(){
+    return {
+      "message":"hello world"
+    }
+  }
+}
+</script>
+<style>
+
+</style>
+
+~~~
+
+## Maven-Springboot入门
+
+#### Maven
+
+Maven是Apache旗下的一个开源项目，是一款用于管理和构建java项目的工具。
+
+官网：https://maven.apache.org/
+
+> Apache 软件基金会，成立于1999年7月，是目前世界上最大的最受欢迎的开源软件基金会，也是一个专门为支持开源项目而生的非盈利性组织。
+>
+> 开源项目：https://www.apache.org/index.html#projects-list
+
+使用Maven能够做什么呢？
+
+1. 依赖管理
+2. 统一项目结构
+3. 项目构建
+
+#### Springboot
+
+##### HTTP协议
+
+HTTP：Hyper Text Transfer Protocol(超文本传输协议)，规定了浏览器与服务器之间数据传输的规则。
+
+- http是互联网上应用最为广泛的一种网络协议 
+- http协议要求：浏览器在向服务器发送请求数据时，或是服务器在向浏览器发送响应数据时，都必须按照固定的格式进行数据传输
+

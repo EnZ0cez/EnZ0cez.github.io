@@ -162,4 +162,123 @@ We now have the ingredients for the basic version of our compression algorithm:
 
 ![image-20240327155856667](./_media/image-20240327155856667.png)
 
+## KRIMP process with a example
+
+### Transaction database
+
+```
+1 3 4
+2 3 5
+1 2 3 5
+2 5 
+1 2 3 5 
+```
+
+#### == Step 1: Read the file containing patterns to use for compression (11 patterns) ==
+
+ 1 2  support: 2
+  1 2 3  support: 2
+  1 2 5  support: 2
+  1 2 3 5  support: 2
+  1 3  support: 3
+  1 3 5  support: 2
+  1 5  support: 2
+  2 3  support: 3
+  2 5  support: 4
+  2 3 5  support: 3
+  3 5  support: 3
+
+#### == Step 2: Read the database (5 transactions) ==
+
+===================  TRANSACTION DATABASE ===================
+0:  1 3 4 
+1:  2 3 5 
+2:  1 2 3 5 
+3:  2 5 
+4:  1 2 3 5 
+ The standard code table after sorting:  
+  2  support: 4
+  3  support: 4
+  5  support: 4
+  1  support: 3
+  4  support: 1
+
+   = Size calculation =
+   encoded size with    [2] is: 	2.000 * 4 = 8.000
+   code table size with [2] is: 	2.000 + 1 + 1 = 4.000
+   encoded size with    [3] is: 	2.000 * 4 = 8.000
+   code table size with [3] is: 	2.000 + 1 + 1 = 4.000
+   encoded size with    [5] is: 	2.000 * 4 = 8.000
+   code table size with [5] is: 	2.000 + 1 + 1 = 4.000
+   encoded size with    [1] is: 	2.415 * 3 = 7.245
+   code table size with [1] is: 	2.415 + 1 + 1 = 4.415
+   encoded size with    [4] is: 	4.000 * 1 = 4.000
+   code table size with [4] is: 	4.000 + 1 + 1 = 6.000
+   Total size = encoded db size + code table size  = (35.245 + 22.415) = 57.660
+
+
+
+#### == Step 3: Sort the candidates by the candidate order: ==
+
+  2 5  support: 4
+  2 3 5  support: 3
+  1 3  support: 3
+  2 3  support: 3
+  3 5  support: 3
+  1 2 3 5  support: 2
+  1 2 3  support: 2
+  1 2 5  support: 2
+  1 3 5  support: 2
+  1 2  support: 2
+  1 5  support: 2
+
+#### == Step 4: Try to add each candidate to the code table ==
+
+ = Iteration 1, the candidate is: [2, 5] =
+ The current code table is: 
+  2  support: 4
+  3  support: 4
+  5  support: 4
+  1  support: 3
+  4  support: 1
+  total size = 57.660 bits.
+ The code table after inserting the candidate is:  
+  2 5  support: 0
+  2  support: 4
+  3  support: 4
+  5  support: 4
+  1  support: 3
+  4  support: 1
+ The code table after updating the support:  (updating means to scan the database again to calculate the support of each itemset)
+  2 5  support: 4
+  2  support: 0
+  3  support: 4
+  5  support: 0
+  1  support: 3
+  4  support: 1
+ The code table after sorting:  
+  2 5  support: 4
+  3  support: 4
+  1  support: 3
+  4  support: 1
+  2  support: 0
+  5  support: 0
+
+   = Size calculation =
+   encoded size with    [2, 5] is: 	1.585 * 4 = 6.340
+   code table size with [2, 5] is: 	1.585 + 2 + 1 = 4.585
+   encoded size with    [3] is: 	1.585 * 4 = 6.340
+   code table size with [3] is: 	1.585 + 1 + 1 = 3.585
+   encoded size with    [1] is: 	2.000 * 3 = 6.000
+   code table size with [1] is: 	2.000 + 1 + 1 = 4.000
+   encoded size with    [4] is: 	3.585 * 1 = 3.585
+   code table size with [4] is: 	3.585 + 1 + 1 = 5.585
+   Total size = encoded db size + code table size  = (22.265 + 17.755) = 40.020
+   The total size is: 40.020 but before, it was: 57.660.
+   Hence, the candidate [2, 5] is KEPT!
+
+
+
+
+
 # Discovering Representative Attribute-stars via Minimum Description Length
