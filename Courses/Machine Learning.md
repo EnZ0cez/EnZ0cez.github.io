@@ -58,7 +58,7 @@ Social media is considered as one of the leading and fastest media to seek news 
 
 对于一个给定的新闻记录 *r*，假设它的领域标签是不可用的。文章提出的无监督领域嵌入学习技术利用 r 的多模态内容（例如，文本、传播网络）来表示 r 的领域，即为 r构建一个低维向量 $f_{domain}(r)$​。文中的方法受到以下两点的启发：（1）用户倾向于形成包含有相似兴趣的人的群体（即同质性），这导致不同领域具有不同的用户基础；（2）不同领域在词语使用上存在显著差异。
 
-所使用的算法如图所示
+所使用的算法如图所示，这个算法大致可以描述为：
 
 #### Gemini
 
@@ -68,6 +68,10 @@ Social media is considered as one of the leading and fastest media to seek news 
 4. 将记录在社区中的成员概率连接起来，构成该记录的领域嵌入 $f_{domain}(r)$。
 
 ### Domain-agnostic News Classification
+
+In our news classification model, 
+
+each news record $r$ is represented as a vector $f_{\text{input}}(r)$ using the textual content $W^r$ and the propagation network $G^r$ of $r$ (elaborated in the section Experiments). Then, our classification model maps $f_{\text{input}}(r)$ into two different subspaces such that one preserves the domain-specific knowledge, $f_{\text{specific}}: f_{\text{input}}(r) \rightarrow \mathbb{R}^d$, and the other preserves the cross-domain knowledge $f_{\text{shared}}: f_{\text{input}}(r) \rightarrow \mathbb{R}^d$, of $r$. Here $d$ is the dimension of the subspaces. Then, the concatenation of the $f_{\text{specific}}(r)$ and $f_{\text{shared}}(r)$ is used to recover the label $y'$ and the input representation $f_{\text{input}}(r)$ of $r$ during training via two decoder functions $g_{\text{pred}}$ and $g_{\text{recons}}$ respectively.
 
 第二部分：**跨领域新闻分类**
 
@@ -91,7 +95,6 @@ $$
 其中$y^r$和$\hat{f}_{\text{input}}(r)$分别表示预测的标签和预测的输入表示。BCE代表二元交叉熵损失函数。我们最小化然而，$L_{\text{pred}}$和$L_{\text{recon}}$没有考虑到新闻记录中的领域差异。因此，我们现在讨论如何利用函数$f_{\text{specific}}$和$f_{\text{shared}}$进一步学习，以保留新闻记录中的领域特定知识和跨领域知识。
 
 **利用领域特定知识** 为了保留领域特定的知识，我们利用一个辅助项$L_{\text{specific}}$来学习一个新的解码器函数$g_{\text{specific}}$。为了反映领域特定表示的优化，我们使用域函数$f_{\text{domain}}(r)$或其正则化的表示$f_{\text{specific}}(r)$。我们最小化$L_{\text{specific}}$来找到只包含领域特定知识的最优参数$f_{\text{specific}}$，这个过程可以定义如下：
-
 $$
 L_{\text{specific}} = \left\| f_{\text{domain}}(r) - g_{\text{specific}}(f_{\text{specific}}(r)) \right\|^2
 $$
@@ -121,25 +124,6 @@ $$ (\hat{\theta}_2) = \underset{\theta_2}{\text{argmax}} \, L_{final}(\theta_1, 
 
 其中 $\theta_1$ 和 $\theta_2$ 分别表示在 $(f_{species}^{shared}, f_{species}^{prox}, f_{species}^{recon})$ 和 $(f_{shared}^{species}, f_{shared}^{prox}, f_{shared}^{recon})$​ 中的参数。已经提出的优化方案的收敛性质在 (Silva et al. 2021) 中有详细研究。
 
-- $f_{input}(r) = W^T r + b$
-- $f_{specific}(r) = g_{specific}(f_{input}(r))$
-- $f_{shared}(r) = g_{shared}(f_{input}(r))$
-- $y = g_{pred}(f_{specific}(r) \oplus f_{shared}(r))$
-- $L_{pred} = BCE(y, y^{'})$
-- $L_{recon} = ||f_{input}(r) - f_{input}(r)||^2$
-- $L_{specific} = ||g_{specific}(f_{input}(r)) - g_{specific}(f_{input}(r))||^2$
-- $L_{shared} = ||g_{shared}(f_{input}(r)) - g_{shared}(f_{input}(r))||^2$
-- $L_{final} = \lambda_1 L_{prox} + \lambda_2 L_{species} + \lambda_3 L_{shared} - \lambda_4 L_{backward}$
-
-#### GPT4
-
-1. **模型结构**：模型采用输入向量 $f_{\text{input}}(r)$，该向量根据新闻文本内容和传播网络生成。这个输入进一步被映射到两个子空间，分别保留领域特定知识和跨领域知识，通过两个映射函数 $f_{\text{specific}}$ 和 $f_{\text{shared}}$ 实现。
-2. **解码与重构**：利用连接的领域特定和跨领域子空间的输出，通过解码函数 $g_{\text{pred}}$ 和 $g_{\text{recons}}$ 分别进行标签预测和输入重构。
-3. **损失函数设计**：介绍了两个基本损失函数，包括预测损失 $L_{\text{pred}}$ 和重构损失 $L_{\text{recon}}$，并提出通过额外的损失函数 $L_{\text{specific}}$ 和 $L_{\text{shared}}$ 来分别优化领域特定和跨领域的知识表示。
-4. **领域特定与跨领域优化**：详细讨论了如何通过各自的损失函数学习和优化领域特定的解码器 $g_{\text{specific}}$ 和跨领域的解码器 $g_{\text{shared}}$。
-5. **综合优化策略**：提出一个综合的损失函数 $L_{final}$，通过调整各个损失项的权重参数 $\lambda_1, \lambda_2, \lambda_3, \lambda_4$ 来平衡各项任务，并描述了参数优化的过程。
-6. **模型训练**：模型优化过程被划分为两步，分别是最小化和最大化综合损失函数，来调整参数 $\theta_1$ 和 $\theta_2$，确保模型的有效训练和收敛性质的考察。
-
 #### Gemini
 
 模型的输入是一个新闻记录$r$，输出是一个标签$y$。
@@ -150,28 +134,21 @@ $$ (\hat{\theta}_2) = \underset{\theta_2}{\text{argmax}} \, L_{final}(\theta_1, 
 
 $f_{specific}(r)$包含领域特定知识，$f_{shared}(r)$包含跨领域知识。
 
-模型分别使用两个解码函数$g_{specific}$和$g_{shared}$来解码$f_{specific}(r)$和$f_{shared}(r)$。
+模型分别使用两个解码函数$g_{specific}$和$g_{shared}$来解码$f_{specific}(r)$和$f_{shared}(r)$​。
 
-最后，模型将$g_{specific}(r)$和$g_{shared}(r)$连接起来，得到最终的输出$y$。
+我们使$L_{pred}$和$L_{recon}$最小以找到$f_{specific}(r)$和$f_{shared}(r)$，$f_{specific}(r)$和$f_{shared}(r)$的最优参数
 
 **利用领域特定知识**
 
-模型使用辅助项$L_{\text{specific}}$来学习一个新的解码器函数$g_{\text{specific}}$，该函数只包含领域特定知识。
+我们最小化$L_{\text{specific}}$来找到只包含领域特定知识的最优参数$f_{\text{specific}}$，这个过程可以定义如下：
 
 **利用跨领域知识**
 
-模型训练一个解码器函数$g_{\text{shared}}$来准确预测领域知识的$f_{\text{shared}}(r)$，并训练$f_{\text{shared}}$通过最大化$L_{\text{shared}}$的损失来只依赖于领域知识。
+相比之下，我们学习$f_{\text{shared}}$忽略领域特定知识，跨领域重构新闻记录。通过最大化$L_{\text{shared}}$的损失来训练$f_{\text{shared}}$只依赖于领域知识，这些知识有助于转移知识编码常模。这个过程可以定义如下：
 
 **集成模型**
 
 最终的损失函数模型被表述为$L_{final} = \lambda_1 L_{prox} + \lambda_2 L_{species} + \lambda_3 L_{shared} - \lambda_4 L_{backward}$，其中 $\lambda_1$, $\lambda_2$, $\lambda_3$ 和 $\lambda_4$ 控制赋予每个损失项的重要性。
-
-**优化方案**
-
-为了优化最终的损失函数，模型使用两步优化方案：
-
-1. 优化 $\theta_1$ 以最小化 $L_{final}$。
-2. 优化 $\theta_2$ 以最大化 $L_{final}$。
 
 ### LSH-based Instance Selection
 
@@ -197,22 +174,13 @@ $$ h_{i,j} = \sqrt{3} \times
 
 此外，提出的方法非常高效（$O(|H||R|)$ 复杂度），与其他基于实例的优化算法（例如，k-均值（Lloyd 1982））相比，具有 $O(|R|^2)$ 的复杂度，其中 $|R| \gg |H|$。为了衡量领域内嵌入的距离，我们采用了 Laib 等人（2017）提出的选择方法，可以为给定的记录集 $r_1, r_2, \ldots, r_n$ 计算距离，这些记录使用相同的方法表示。
 
-领域嵌入：$\lambda = \frac{1}{4n} \left( \sum_{i} (\delta_i - \bar{\delta})^2 \right)^{\frac{1}{2}}$，其中 $\delta_i = \min(k, L2\text{norm}(f_{domain}(r_i), f_{domain}(r_j)))$ 和 $\bar{\delta} = \Sigma \delta_i / n$。如果覆盖率高，$\lambda$​ 小。因此，提出的方法与随机实例选择相比，如图 4b 所示，提供了更好的领域覆盖率。
+领域嵌入：$\lambda = \frac{1}{4n} \left( \sum_{i} (\delta_i - \bar{\delta})^2 \right)^{\frac{1}{2}}$，其中 $\delta_i = \min(k, L2\text{norm}(f_{domain}(r_i), f_{domain}(r_j)))$ 和 $\bar{\delta} = \Sigma \delta_i / n$。如果覆盖率高，$\lambda$​​ 小。因此，提出的方法与随机实例选择相比，如图 4b 所示，提供了更好的领域覆盖率。
 
-
-
-
-
-#### GPT4
-
-1. **领域嵌入**：使用领域嵌入来代表每条新闻记录，这有助于捕捉记录的特定领域特征。
-2. **局部敏感哈希（LSH）算法**：利用一组哈希函数，基于领域嵌入来生成哈希值，以便将新闻记录分组。这一步骤用于识别和选择距离较远的记录集，增强模型对不同领域的敏感性。
-3. **数据集选择与优化**：通过从每个哈希分组中随机挑选记录，构建一个覆盖多个领域的训练数据集。这样的选择旨在优化模型的域适应性和减少训练数据的偏差。
-4. **效率与实现**：该方法具有较低的计算复杂度，相较于其他常见的实例选择算法（如k-均值），提供了更高的效率和更好的领域覆盖率。
+LSH使用多个哈希函数，这些哈希函数设计成保持局部敏感性，即距离近的对象通过这些函数有更大的概率映射到相同的哈希值。通过这种方式，可以有效地进行近似最近邻搜索，而不必比较数据集中的每个点，从而在处理大数据集时提高效率。
 
 #### Gemini
 
-文中的技术使用随机投影和局部敏感哈希 (LSH) 算法来选择一个标记训练数据集，该数据集覆盖尽可能多的领域。该算法通过以下步骤实现：
+文中的技术使用局部敏感哈希 (LSH) 算法来选择一个标记训练数据集，该数据集覆盖尽可能多的领域。该算法通过以下步骤实现：
 
 1. 创建哈希函数，并使用这些函数计算每个新闻记录的哈希值。
 2. 将具有相似哈希值的新闻记录分组。
@@ -221,7 +189,7 @@ $$ h_{i,j} = \sqrt{3} \times
 
 从图4-a可以看出，相比于随机选择，文中所提出的方法甚至提供了来自很少出现的域的大量样本。
 
-与随机实例选择相比，所提出的方法产生了更好的域覆盖率，如图 4b 所示。
+从图4-b可以看出，与随机实例选择相比，所提出的方法产生了更好的域覆盖率，如图 4b 所示。
 
 ## Experiment
 
