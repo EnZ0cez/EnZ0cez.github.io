@@ -50,7 +50,7 @@ Social media is considered as one of the leading and fastest media to seek news 
 
 ### Overview of the proposed framework
 
-首先是文章提出的框架概览：所提出的假新闻检测模型由两个主要部分组成：（1）无监督域嵌入学习（模块A）； (2) 有监督的与领域无关的新闻分类（模块 B）。这两个组件集成在一起，可以识别假新闻，同时利用新闻记录中的特定领域和跨领域知识。此外，文章提出的实例选择方法（模块C）采用相同的域嵌入学习组件来选择信息丰富的新闻记录进行标记，最终产生一个最大化域覆盖范围的标记数据集。
+首先是文章提出的框架概览：所提出的假新闻检测模型由两个主要部分组成：（1）无监督多模态域发现（模块A）； (2) 有监督的与领域无关的新闻分类（模块 B）。这两个组件集成在一起，可以识别假新闻，同时利用新闻记录中的特定领域和跨领域知识。此外，文章提出的实例选择方法（模块C）采用相同的域嵌入学习组件来选择信息丰富的新闻记录进行标记，最终产生一个最大化域覆盖范围的标记数据集。
 
 ### Unsupervised Domain Discovery
 
@@ -73,7 +73,7 @@ In our news classification model,
 
 each news record $r$ is represented as a vector $f_{\text{input}}(r)$ using the textual content $W^r$ and the propagation network $G^r$ of $r$ (elaborated in the section Experiments). Then, our classification model maps $f_{\text{input}}(r)$ into two different subspaces such that one preserves the domain-specific knowledge, $f_{\text{specific}}: f_{\text{input}}(r) \rightarrow \mathbb{R}^d$, and the other preserves the cross-domain knowledge $f_{\text{shared}}: f_{\text{input}}(r) \rightarrow \mathbb{R}^d$, of $r$. Here $d$ is the dimension of the subspaces. Then, the concatenation of the $f_{\text{specific}}(r)$ and $f_{\text{shared}}(r)$ is used to recover the label $y'$ and the input representation $f_{\text{input}}(r)$ of $r$ during training via two decoder functions $g_{\text{pred}}$ and $g_{\text{recons}}$ respectively.
 
-第二部分：**跨领域新闻分类**
+
 
 在我们的新闻分类模型中，每个新闻记录$r$用向量$f_{\text{input}}(r)$表示，该向量使用文本内容$W^r$和传播网络$G^r$来表示（详见实验部分）。然后，我们的分类模型将$f_{\text{input}}(r)$映射到两个不同的子空间，一个保留领域特定知识$f_{\text{specific}} \colon f_{\text{input}}(r) \rightarrow \mathbb{R}^d$，另一个保留跨领域知识$f_{\text{shared}} \colon f_{\text{input}}(r) \rightarrow \mathbb{R}^d$。这里$d$是子空间的维度。然后，连接$f_{\text{specific}}(r)$和$f_{\text{shared}}(r)$用于在训练期间恢复标签$y^r$和输入表示$f_{\text{input}}(r)$，通过两个解码函数$g_{\text{pred}}$和$g_{\text{recons}}$分别实现。
 $$
@@ -126,17 +126,19 @@ $$ (\hat{\theta}_2) = \underset{\theta_2}{\text{argmax}} \, L_{final}(\theta_1, 
 
 #### Gemini
 
+第二部分：**跨领域新闻分类**
+
 模型的输入是一个新闻记录$r$，输出是一个标签$y$。
 
 模型首先将新闻记录$r$编码成一个向量$f_{input}(r)$。
 
 然后，模型将$f_{input}(r)$分成两个部分：$f_{specific}(r)$和$f_{shared}(r)$。
 
-$f_{specific}(r)$包含领域特定知识，$f_{shared}(r)$包含跨领域知识。
+$f_{specific}(r)$包含领域特定知识，$f_{shared}(r)$​包含跨领域知识。
 
-模型分别使用两个解码函数$g_{specific}$和$g_{shared}$来解码$f_{specific}(r)$和$f_{shared}(r)$​。
+训练过程中，将 $f_{specific}(r)$ 和 $f_{shared}(r)$ 连接起来，用于恢复新闻记录 $r$ 的标签 $y'$ 和输入表示 $f_{input}(r)$。这一过程通过两个解码函数 $g_{pred}$ 和 $g_{recons}$ 分别实现。
 
-我们使$L_{pred}$和$L_{recon}$最小以找到$f_{specific}(r)$和$f_{shared}(r)$，$f_{specific}(r)$和$f_{shared}(r)$的最优参数
+我们使$L_{pred}$和$L_{recon}$最小以找到$f_{specific}(r)$和$f_{shared}(r)$，$g_{pred}$和$$g_{recons}$$的最优参数
 
 **利用领域特定知识**
 
