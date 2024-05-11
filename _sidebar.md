@@ -6,7 +6,7 @@
 
    * [KRIMP](Papers/KRIMP.md)
 
-   * [English Presentation](Papers/Professional%20English.md)
+   <!-- * [English Presentation](Papers/Professional%20English.md) -->
 
 
 * Courses
@@ -16,7 +16,7 @@
 
    * [Game Theory](Courses/GameTheory.md)
    
-   * [Game Theory Presentation](Courses/Game%20Theory%20Presentation.md)
+   <!-- * [Game Theory Presentation](Courses/Game%20Theory%20Presentation.md) -->
 
    * [Machine Learning](Courses/Machine%20Learning.md)
 
