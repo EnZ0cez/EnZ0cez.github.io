@@ -21,13 +21,21 @@ Slim closely approximates the powerful **greedy approach** of selecting the best
 
 In this paper we consider transaction databases.
 
+![image-20240711144529497](./_media/image-20240711144529497.png)
+
+Throughout this paper all logarithms are to base 2, and by convention we use 0 log 0 = 0.
+
 ### MDL
 
 ![image-20240415145849389](C:/Users/enzoc/AppData/Roaming/Typora/typora-user-images/image-20240415145849389.png)
 
 in which L(M ) is the length in bits of the description of M , and L(D | M ) is the length of the description of the data when encoded with model M .
 
-To use MDL, we have to define what our models M are, how a M ∈ *M* describes a database, and how we encode these in bits.
+To use MDL, we have to define what our models M are, how a M ∈ *M* describes a database, and how we encode these in bits. Note, that in MDL we are only concerned with code lengths, not actual code words.
+
+### Code tables
+
+As our itemset-based models we use code tables. A code table is a simple dictionary: a two-column table with itemsets on the left-hand side, and corresponding codes on its righthand side. The itemsets in the code table are ordered first descending on cardinality, second descending on support, and third lexicographically. We refer to this as the Standard Cover Order.
 
 ## Identifying good candidates
 
@@ -48,3 +56,5 @@ We would calculate the gain of each candidate.
 Next, once we know the gains in compression for every candidate, we simply locally optimise and accept that X into CT which maximises compression.
 
 Instead, we can estimate the gain first, and only calculate exact gain for the best estimated candidate.
+
+we can say more on what itemsets we want: highly frequent sets of only few items.

@@ -1,0 +1,23 @@
+/* 全局字体 */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+  }
+  
+  /* 文档内容字体 */
+  .content {
+    font-family: 'Georgia', serif;
+  }
+  
+  /* 标题字体 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+  }
+  
+  /* 导航栏字体 */
+  .sidebar .app-name,
+  .sidebar-nav {
+    font-family: 'Courier New', monospace;
+  }
+  
