@@ -8058,3 +8058,23 @@ using a matrix for the size 2 patterns.
 | Item 5 |        |        |        |        | -      |
 
 The problem is that maybe this pattern doesn’t improve but the followed pattern improves. So adding this condition will result in less compre
+
+
+
+
+
+
+
+add 10 percent one time
+
+set fixed value size of the matrix , like the codetable length
+
+add a graph for the iteration times ,convergence
+
+and a graph for matrix size
+
+decrease the temperature for each pattern
+
+initialize the matrix after the while loop
+
+add the hill climbing

@@ -1627,3 +1627,251 @@ InetAddress：此类表示Internet协议（IP）地址
 ### 请求响应
 
 ![image-20241029194856753](./_media/image-20241029194856753.png)
+
+案例：需求：加载并解析xml文件中的数据，完成数据处理，并在页面展示
+
+![image-20241126192136750](./_media/image-20241126192136750.png)
+
+* 获取员工数据，返回统一响应结果，在页面渲染展示
+
+	在我们进行程序设计以及程序开发时，尽可能让每一个接口、类、方法的职责更单一些（单一职责原则）。
+
+	> 单一职责原则：一个类或一个方法，就只做一件事情，只管一块功能。
+	>
+	> 这样就可以让类、接口、方法的复杂度更低，可读性更强，扩展性更好，也更利用后期的维护。
+
+	我们之前开发的程序呢，并不满足单一职责原则。下面我们来分析下之前的程序：
+
+![image-20241126202040827](./_media/image-20241126202040827.png)那其实我们上述案例的处理逻辑呢，从组成上看可以分为三个部分：
+
+- 数据访问：负责业务数据的维护操作，包括增、删、改、查等操作。
+- 逻辑处理：负责业务逻辑处理的代码。
+- 请求处理、响应数据：负责，接收页面的请求，给页面响应数据。
+
+按照上述的三个组成部分，在我们项目开发中呢，可以将代码分为三层：
+
+![image-20241126202102681](./_media/image-20241126202102681.png)
+
+- Controller：控制层。接收前端发送的请求，对请求进行处理，并响应数据。
+
+	```java
+	@RestController
+	public class EmpController {
+	
+	    private EmpServiceA empServiceA = new EmpServiceA();
+	
+	    @RequestMapping("/listEmp")
+	    public Result list(){
+	
+	        List<Emp> empList = empServiceA.listEmp();
+	        //3. 响应数据
+	        return Result.success(empList);
+	    }
+	}
+	```
+
+	
+
+- Service：业务逻辑层。处理具体的业务逻辑。
+
+	```java
+	public class EmpServiceA implements EmpService {
+	
+	    private EmpDaoA empDaoA = new EmpDaoA();
+	
+	    @Override
+	    public List<Emp> listEmp() {
+	        List<Emp> empList = empDaoA.listEmp();
+	        //2. 对数据进行转换处理 - gender, job
+	        empList.stream().forEach(emp -> {
+	            //处理 gender 1: 男, 2: 女
+	            String gender = emp.getGender();
+	            if("1".equals(gender)){
+	                emp.setGender("男");
+	            }else if("2".equals(gender)){
+	                emp.setGender("女");
+	            }
+	            //处理job - 1: 讲师, 2: 班主任 , 3: 就业指导
+	            String job = emp.getJob();
+	            if("1".equals(job)){
+	                emp.setJob("讲师");
+	            }else if("2".equals(job)){
+	                emp.setJob("班主任");
+	            }else if("3".equals(job)){
+	                emp.setJob("就业指导");
+	            }
+	        });
+	        return empList;
+	    }
+	}
+	```
+
+	
+
+- Dao：数据访问层(Data Access Object)，也称为持久层。负责数据访问操作，包括数据的增、删、改、查。
+
+	```java
+	public class EmpDaoA implements EmpDao {
+	
+	
+	    @Override
+	    public List<Emp> listEmp() {
+	        //1. 加载并解析emp.xml
+	        String file = this.getClass().getClassLoader().getResource("emp.xml").getFile();
+	        //System.out.println(file);
+	        List<Emp> empList = XmlParserUtils.parse(file, Emp.class);
+	        return empList;
+	    }
+	}
+	```
+
+
+
+### 分层解耦
+
+首先需要了解软件开发涉及到的两个概念：内聚和耦合。
+
+- 内聚：软件中各个功能模块内部的功能联系。
+
+- 耦合：衡量软件中各个层/模块之间的依赖、关联的程度。
+
+**软件设计原则：高内聚低耦合。**
+
+> 高内聚指的是：一个模块中各个元素之间的联系的紧密程度，如果各个元素(语句、程序段)之间的联系程度越高，则内聚性越高，即 "高内聚"。
+>
+> 低耦合指的是：软件中各个层、模块之间的依赖关联程序越低越好。
+
+程序中高内聚的体现：
+
+- EmpServiceA类中只编写了和员工相关的逻辑处理代码
+
+![image-20241126202150031](./_media/image-20241126202150031.png)
+
+程序中耦合代码的体现：
+
+- 把业务类变为EmpServiceB时，需要修改controller层中的代码
+- ![image-20241126205343345](./_media/image-20241126205343345.png)
+
+#### 解耦思路
+
+之前我们在编写代码时，需要什么对象，就直接new一个就可以了。 这种做法呢，层与层之间代码就耦合了，当service层的实现变了之后， 我们还需要修改controller层的代码。
+
+ 那应该怎么解耦呢？
+
+- 首先不能在EmpController中使用new对象。代码如下![image-20241126205357610](./_media/image-20241126205357610.png)
+
+- 此时，就存在另一个问题了，不能new，就意味着没有业务层对象（程序运行就报错），怎么办呢？
+	- 我们的解决思路是：
+		- 提供一个容器，容器中存储一些对象(例：EmpService对象)
+		- controller程序从容器中获取EmpService类型的对象
+
+我们想要实现上述解耦操作，就涉及到Spring中的两个核心概念：
+
+- **控制反转：** Inversion Of Control，简称IOC。对象的创建控制权由程序自身转移到外部（容器），这种思想称为控制反转。
+
+	> 对象的创建权由程序员主动创建转移到容器(由容器创建、管理对象)。这个容器称为：IOC容器或Spring容器
+
+- **依赖注入：** Dependency Injection，简称DI。容器为应用程序提供运行时，所依赖的资源，称之为依赖注入。
+
+	> 程序运行时需要某个资源，此时容器就为其提供这个资源。
+	>
+	> 例：EmpController程序运行时需要EmpService对象，Spring容器就为其提供并注入EmpService对象
+
+IOC容器中创建、管理的对象，称之为：bean对象
+
+#### IOC&DI
+
+任务：完成Controller层、Service层、Dao层的代码解耦
+
+- 思路：
+	1. 删除Controller层、Service层中new对象的代码
+	2. Service层及Dao层的实现类，交给IOC容器管理
+	3. 为Controller及Service注入运行时依赖的对象
+		- Controller程序中注入依赖的Service层对象
+		- Service程序中注入依赖的Dao层对象
+
+完整的三层代码：
+
+- **Controller层：**
+
+~~~java
+@RestController
+public class EmpController {
+
+    @Autowired //运行时,从IOC容器中获取该类型对象,赋值给该变量
+    private EmpService empService ;
+
+    @RequestMapping("/listEmp")
+    public Result list(){
+        //1. 调用service, 获取数据
+        List<Emp> empList = empService.listEmp();
+
+        //3. 响应数据
+        return Result.success(empList);
+    }
+}
+~~~
+
+- **Service层：**
+
+~~~java
+@Component //将当前对象交给IOC容器管理,成为IOC容器的bean
+public class EmpServiceA implements EmpService {
+
+    @Autowired //运行时,从IOC容器中获取该类型对象,赋值给该变量
+    private EmpDao empDao ;
+
+    @Override
+    public List<Emp> listEmp() {
+        //1. 调用dao, 获取数据
+        List<Emp> empList = empDao.listEmp();
+
+        //2. 对数据进行转换处理 - gender, job
+        empList.stream().forEach(emp -> {
+            //处理 gender 1: 男, 2: 女
+            String gender = emp.getGender();
+            if("1".equals(gender)){
+                emp.setGender("男");
+            }else if("2".equals(gender)){
+                emp.setGender("女");
+            }
+
+            //处理job - 1: 讲师, 2: 班主任 , 3: 就业指导
+            String job = emp.getJob();
+            if("1".equals(job)){
+                emp.setJob("讲师");
+            }else if("2".equals(job)){
+                emp.setJob("班主任");
+            }else if("3".equals(job)){
+                emp.setJob("就业指导");
+            }
+        });
+        return empList;
+    }
+}
+~~~
+
+**Dao层：**
+
+~~~java
+@Component //将当前对象交给IOC容器管理,成为IOC容器的bean
+public class EmpDaoA implements EmpDao {
+    @Override
+    public List<Emp> listEmp() {
+        //1. 加载并解析emp.xml
+        String file = this.getClass().getClassLoader().getResource("emp.xml").getFile();
+        System.out.println(file);
+        List<Emp> empList = XmlParserUtils.parse(file, Emp.class);
+        return empList;
+    }
+}
+~~~
+
+要把某个对象交给IOC容器管理，需要在对应的类上加上如下注解之一：
+
+| 注解        | 说明                 | 位置                                            |
+| :---------- | -------------------- | ----------------------------------------------- |
+| @Controller | @Component的衍生注解 | 标注在控制器类上                                |
+| @Service    | @Component的衍生注解 | 标注在业务类上                                  |
+| @Repository | @Component的衍生注解 | 标注在数据访问类上（由于与mybatis整合，用的少） |
+| @Component  | 声明bean的基础注解   | 不属于以上三类时，用此注解                      |

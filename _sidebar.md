@@ -14,20 +14,13 @@
    
    * [Algorithm Design and Analysis](Courses/算法设计与分析课程.md)
 
-   * [Game Theory](Courses/GameTheory.md)
-   
-   <!-- * [Game Theory Presentation](Courses/Game%20Theory%20Presentation.md) -->
-
-   * [Machine Learning](Courses/Machine%20Learning.md)
-
-
-   <!-- * [Teaching](Courses/教学目标.md) -->
-   
      <!--注意这里是相对路径-->
    
 * Programming
    * [拼图小游戏](Programming/拼图小游戏.md)
    * [JavaWeb](Programming/JavaWeb.md)
+   * [Java笔记](Programming/Java笔记.md)
+   * [Leetcode](Programming/leetcodenotes.md)
 
 * Knowledge
    * [芯片制裁简述](Knowledge/Semiconductor.md)
