@@ -1,23 +1,30 @@
+/* Import modern, visually appealing fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Fira+Code:wght@400;700&display=swap');
+
 /* 全局字体 */
 body {
-    font-family: 'Open Sans', sans-serif;
-    line-height: 1.6;
-  }
-  
-  /* 文档内容字体 */
-  .content {
-    font-family: 'Fira Code', serif;
-  }
-  
-  /* 标题字体 */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Fira Code', sans-serif;
-    font-weight: bold;
-  }
-  
-  /* 导航栏字体 */
-  .sidebar .app-name,
-  .sidebar-nav {
-    font-family: 'Fira Code', monospace;
-  }
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  line-height: 1.7;
+  font-size: 17px;
+  color: #222;
+  background-color: #fafbfc;
+}
+
+/* 文档内容字体 */
+.content {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+}
+
+/* 标题字体 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fira Code', 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* 导航栏字体 */
+.sidebar .app-name,
+.sidebar-nav {
+  font-family: 'Fira Code', 'Inter', 'Segoe UI', 'Roboto Mono', 'monospace';
+}
   
