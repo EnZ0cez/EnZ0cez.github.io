@@ -476,3 +476,38 @@ section.cover .cover-main h1 a span {
   color: inherit;
   background: none;
 }
+
+/* ---------- v2.2 enforced contrast ----------
+   Screenshot review (with pixel sampling) showed Docsify's runtime
+   still rendering sidebar links #505d6b and heading spans #34495e
+   despite the v2.1 specificity fixes, so these declarations are
+   enforced with !important. */
+
+.sidebar .sidebar-nav ul li a {
+  color: var(--paper-dim) !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.sidebar .sidebar-nav ul li.active > a {
+  color: var(--paper) !important;
+}
+
+section.cover .cover-main h1,
+section.cover .cover-main h1 a,
+section.cover .cover-main h1 .anchor span,
+section.cover .cover-main h1 span {
+  color: var(--paper) !important;
+}
+
+.markdown-section h1,
+.markdown-section h1 .anchor,
+.markdown-section h1 .anchor span {
+  color: var(--burgundy) !important;
+}
+
+.markdown-section h2 .anchor span,
+.markdown-section h3 .anchor span {
+  color: inherit !important;
+}
