@@ -1,30 +1,301 @@
-/* Import modern, visually appealing fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Fira+Code:wght@400;700&display=swap');
+/* EnZ0's Homepage — design tokens and theme overrides for Docsify.
+   Plan and rationale: DESIGN.md (Anthropic frontend-design skill).
+   Boldness is spent in one place: the SZU burgundy + serif Chinese headings.
+   Everything else stays quiet. */
 
-/* 全局字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --szu-burgundy: #7e0725;
+  --burgundy-deep: #5e051b;
+  --ink: #211d1f;
+  --ink-soft: #57504f;
+  --paper: #ffffff;
+  --stone: #f4f4f2;
+  --line: #e2dedb;
+  --pine: #28544a;
+  --font-body: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-display: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+::selection {
+  background: var(--szu-burgundy);
+  color: var(--paper);
+}
+
 body {
-  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-  line-height: 1.7;
+  font-family: var(--font-body);
   font-size: 17px;
-  color: #222;
-  background-color: #fafbfc;
+  line-height: 1.8;
+  color: var(--ink);
+  background: var(--paper);
 }
 
-/* 文档内容字体 */
-.content {
-  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+/* ---------- Reading column ---------- */
+
+.markdown-section {
+  max-width: 880px;
+  padding: 2rem 2.5rem 4rem;
 }
 
-/* 标题字体 */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Fira Code', 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+.markdown-section p,
+.markdown-section li {
+  max-width: 72ch;
+}
+
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3,
+.markdown-section h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.markdown-section h1 {
+  font-size: 2.1rem;
+  font-weight: 900;
+  line-height: 1.3;
+  margin: 0 0 1.2rem;
+}
+
+.markdown-section h2 {
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1.4;
+  margin: 2.6rem 0 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.markdown-section h3 {
+  font-size: 1.22rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 2rem 0 0.7rem;
+}
+
+.markdown-section a {
+  color: var(--szu-burgundy);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  text-underline-offset: 3px;
+}
+
+.markdown-section a:hover {
+  color: var(--burgundy-deep);
+  border-bottom-color: var(--burgundy-deep);
+}
+
+/* ---------- Code: the only place monospace belongs ---------- */
+
+.markdown-section code {
+  font-family: var(--font-code);
+  font-size: 0.88em;
+  color: var(--burgundy-deep);
+  background: var(--stone);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.markdown-section pre {
+  background: var(--stone);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+}
+
+.markdown-section pre > code {
+  font-family: var(--font-code);
+  color: var(--ink);
+  background: transparent;
+  padding: 0;
+}
+
+/* ---------- Quotes, tables, images ---------- */
+
+.markdown-section blockquote {
+  margin: 1.4rem 0;
+  padding: 0.6rem 1.1rem;
+  color: var(--ink-soft);
+  background: var(--stone);
+  border-left: 3px solid var(--szu-burgundy);
+}
+
+.markdown-section blockquote p {
+  margin: 0.4rem 0;
+}
+
+.markdown-section table {
+  border-collapse: collapse;
+  margin: 1.4rem 0;
+}
+
+.markdown-section th,
+.markdown-section td {
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.9rem;
+  text-align: left;
+}
+
+.markdown-section th {
+  font-family: var(--font-body);
   font-weight: 700;
-  letter-spacing: 0.01em;
+  background: var(--stone);
 }
 
-/* 导航栏字体 */
-.sidebar .app-name,
-.sidebar-nav {
-  font-family: 'Fira Code', 'Inter', 'Segoe UI', 'Roboto Mono', 'monospace';
+.markdown-section img {
+  border-radius: 6px;
 }
-  
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  background: var(--stone);
+  border-right: 1px solid var(--line);
+  width: 280px;
+}
+
+.sidebar .app-name {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--szu-burgundy);
+  text-align: left;
+  padding: 0 1.4rem;
+}
+
+.sidebar-nav {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 0 0.6rem;
+}
+
+.sidebar-nav a {
+  color: var(--ink);
+}
+
+.sidebar-nav a:hover {
+  color: var(--szu-burgundy);
+}
+
+.sidebar-nav li.active > a,
+.sidebar ul li.active > a {
+  color: var(--szu-burgundy);
+  font-weight: 700;
+  border-right: none;
+  box-shadow: inset 3px 0 0 var(--szu-burgundy);
+}
+
+.search {
+  border-bottom: 1px solid var(--line);
+}
+
+.search input {
+  font-family: var(--font-body);
+  background: var(--paper);
+}
+
+.search input:focus {
+  outline: 2px solid var(--pine);
+  outline-offset: 1px;
+}
+
+/* ---------- Top nav ---------- */
+
+.app-nav a {
+  color: var(--ink);
+}
+
+.app-nav a:hover,
+.app-nav a.active {
+  color: var(--szu-burgundy);
+}
+
+/* ---------- Cover ---------- */
+
+section.cover {
+  background: var(--paper);
+}
+
+section.cover .cover-main {
+  max-width: 720px;
+  margin: 0 auto;
+  animation: cover-in 0.6s ease-out both;
+}
+
+@keyframes cover-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+section.cover h1 {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+section.cover blockquote {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  border: none;
+  background: transparent;
+}
+
+section.cover .cover-main > p:last-child a {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  letter-spacing: 0;
+  border-radius: 6px;
+  padding: 0.65rem 1.6rem;
+  color: var(--szu-burgundy);
+  border: 1px solid var(--szu-burgundy);
+  background: transparent;
+}
+
+section.cover .cover-main > p:last-child a:last-child {
+  color: var(--paper);
+  background: var(--szu-burgundy);
+}
+
+section.cover .cover-main > p:last-child a:hover {
+  background: var(--burgundy-deep);
+  border-color: var(--burgundy-deep);
+  color: var(--paper);
+}
+
+/* ---------- Focus & motion ---------- */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--pine);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  section.cover .cover-main {
+    animation: none;
+  }
+  * {
+    transition: none !important;
+  }
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  .markdown-section {
+    padding: 1.4rem 1.2rem 3rem;
+  }
+  section.cover h1 {
+    font-size: 2.3rem;
+  }
+}
